@@ -6,4 +6,8 @@ select title from collections where release_year between 2018 and 2020;
 
 select name from artists where name not like '% %';
 
-select title from tracks where title ilike '%мой%' or title ilike '%my%';
+select title from tracks where 
+title ilike 'мой %' or title ilike 'my %'
+or title ilike '% мой' or title ilike '% my'
+or title ilike '% мой %' or title ilike '% my %'
+or title ilike 'мой' or title ilike 'my';

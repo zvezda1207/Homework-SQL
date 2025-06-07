@@ -1,9 +1,9 @@
 --Названия альбомов, в которых присутствуют исполнители более чем одного жанра
-select al.title from albums al 
+select distinct al.title 
+from albums al 
 join artist_album aa on al.album_id = aa.album_id
-join artists a on aa.artist_id = a.artist_id
-join artist_genre ag on a.artist_id = ag.artist_id
-group by al.album_id, al.title
+join artist_genre ag on aa.artist_id = ag.artist_id
+group by al.album_id, ag.artist_id
 having count(distinct ag.genre_id) > 1;
 
 --Наименования треков, которые не входят в сборники
@@ -22,6 +22,24 @@ join tracks t on al.album_id = t.album_id
 where t.duration = (
 select min(duration) from tracks
 );
+
+--Названия альбомов, содержащих наименьшее количество треков
+select al.title
+from albums al
+join tracks t on al.album_id = t.album_id
+group by al.album_id
+having count(t.track_id) = (
+select count(t1.track_id) from tracks t1
+group by t1.album_id
+order by 1
+limit 1
+);
+
+
+
+
+
+
 
 
 
